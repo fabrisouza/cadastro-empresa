@@ -27,4 +27,5 @@ class CompanySerializer(serializers.ModelSerializer):
 class ManagerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manager
-        fields = ['company_id']
+        fields = ['company_id', 'first_name']
+        

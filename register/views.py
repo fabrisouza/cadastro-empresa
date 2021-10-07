@@ -1,5 +1,5 @@
 
-from rest_framework import generics, viewsets, generics
+from rest_framework import generics, viewsets
 from .serializers import UserSerializer, ClientSerializer, CompanySerializer, ManagerSerializer  
 from .models import Client, Company, User, Manager
 from rest_framework.authentication import SessionAuthentication,BasicAuthentication
