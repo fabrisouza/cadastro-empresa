@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from register.models import User, Client, Company
+
+from register.models import Client, Company, User
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
