@@ -1,50 +1,64 @@
 from __future__ import unicode_literals
-from re import search
 
-from django.contrib.admin.options import FORMFIELD_FOR_DBFIELD_DEFAULTS
-
-# from os import name
-from .validators import validate_CNPJ, validate_CPF, valida_cnpj
+from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
+from rest_framework.authtoken.models import Token
 
 from .managers import UserManager
-
+from .validators import valida_cnpj, validate_CNPJ, validate_CPF
 
 
 def upload_file_customer(instance, filename):
-    return f'{instance.name}-{filename}'
+    return f"{instance.name}-{filename}"
+
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(_('first name'), max_length=150, blank=True, null=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True, null=True)
-    cpf = models.CharField('CPF',unique=True, max_length=14, validators=[validate_CPF], blank=True, null=True)
-    document = models.FileField(upload_to= 'meusarquivos', blank=False, null=True)
+    email = models.EmailField(_("email address"), unique=True)
+    first_name = models.CharField(
+        _("first name"), max_length=150, blank=True, null=True
+    )
+    last_name = models.CharField(_("last name"), max_length=150, blank=True, null=True)
+    cpf = models.CharField(
+        "CPF",
+        unique=True,
+        max_length=14,
+        validators=[validate_CPF],
+        blank=True,
+        null=True,
+    )
+    document = models.FileField(upload_to="meusarquivos", blank=False, null=True)
     name = models.CharField(max_length=30, blank=True, null=True)
-    cnpj = models.CharField('CNPJ', max_length=18, validators=[validate_CNPJ, valida_cnpj], blank=True, null=True)
+    cnpj = models.CharField(
+        "CNPJ",
+        max_length=18,
+        validators=[validate_CNPJ, valida_cnpj],
+        blank=True,
+        null=True,
+    )
     address = models.CharField(max_length=90, blank=True, null=True)
     city = models.CharField(max_length=30, blank=True, null=True)
-    company_id = models.ForeignKey('Client', on_delete=models.CASCADE, null=True)
-    is_active = models.BooleanField(_('active'), default=True)
+    company_id = models.ForeignKey("Company", on_delete=models.CASCADE, null=True)
+    is_active = models.BooleanField(_("active"), default=True)
     is_admin = models.BooleanField(
-        _('admin status'),
+        _("admin status"),
         default=False,
-        help_text=_(
-            'Designates whether the user can log into this admin site.'),
+        help_text=_("Designates whether the user can log into this admin site."),
     )
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     class Meta:
-        verbose_name = _('user')
-        verbose_name_plural = _('users')
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
 
     def __str__(self):
         return self.email
@@ -60,22 +74,22 @@ class User(AbstractBaseUser, PermissionsMixin):
         return True
 
     def get_full_name(self):
-        '''
+        """
         Returns the first_name plus the last_name, with a space in between.
-        '''
-        full_name = '%s %s' % (self.first_name, self.last_name)
+        """
+        full_name = "%s %s" % (self.first_name, self.last_name)
         return full_name.strip()
 
     def get_short_name(self):
-        '''
+        """
         Returns the short name for the user.
-        '''
+        """
         return self.first_name
 
     def email_user(self, subject, message, from_email=None, **kwargs):
-        '''
+        """
         Sends an email to this User.
-        '''
+        """
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     @property
@@ -86,24 +100,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Client(User):
-    class Meta:
-        verbose_name_plural = 'Client'
+    @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+    def create_auth_token(sender, instance=None, created=False, **kwargs):
+        if created:
+            Token.objects.create(user=instance)
 
-    def _str_(self):
-        return self.name
+    pass
 
 
 class Company(User):
-    class Meta:
-        verbose_name_plural = 'Company'
-
-    def _str_(self):
-        return self.name
-
-
-class Manager(User):
-    class Meta:
-        verbose_name_plural = 'Manager'
-
-    def _str_(self):
-        return self.name
+    pass

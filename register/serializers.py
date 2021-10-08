@@ -1,31 +1,32 @@
-from re import search
 from rest_framework import serializers
-from register.models import Manager, User, Client, Company
-
+from register.models import User, Client, Company
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['first_name', 'company_id']
-    
-
+        fields = "__all__"
 
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ['first_name', 'last_name', 'cpf', 'email', 'document']
-
+        fields = ["first_name", "last_name", "cpf", "email", "document"]
 
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ['name', 'cnpj', 'email', 'address', 'city']
+        fields = ["name", "cnpj", "email", "address", "city"]
 
 
 class ManagerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Manager
-        fields = ['company_id', 'first_name']
-        
+        model = User
+        fields = ["first_name", "cpf", "email"]
+
+
+class ListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name"]
+        extra_kwargs = {"password": {"write_only": True}}
