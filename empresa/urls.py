@@ -4,7 +4,7 @@ from django.urls import re_path
 from django.urls.conf import include
 from django.conf import settings
 from django.conf.urls.static import static
-from register.views import UserViewSet, ClientViewSet, CompanyViewSet, ManagerViewSet
+from register.views import UserViewSet, ClientViewSet, CompanyViewSet
 from rest_framework import routers
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -29,7 +29,7 @@ router = routers.DefaultRouter()
 router.register(r'user', UserViewSet, basename='User')
 router.register(r'client', ClientViewSet, basename='Client')
 router.register(r'company', CompanyViewSet, basename='Company')
-router.register(r'manager', ManagerViewSet, basename='Manager')
+#router.register(r'manager', ManagerViewSet, basename='Manager')
 # router.register('document', DocsViewSet, basename='Document')
 
 

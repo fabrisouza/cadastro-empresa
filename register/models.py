@@ -34,13 +34,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     document = models.FileField(upload_to="meusarquivos", blank=False, null=True)
     name = models.CharField(max_length=30, blank=True, null=True)
-    cnpj = models.CharField(
-        "CNPJ",
-        max_length=18,
-        validators=[validate_CNPJ, valida_cnpj],
-        blank=True,
-        null=True,
-    )
+    #cnpj = models.CharField(
+    #    "CNPJ",
+    #    max_length=18,
+    #    validators=[validate_CNPJ, valida_cnpj],
+    #    blank=True,
+    #    null=True,
+    #)
     address = models.CharField(max_length=90, blank=True, null=True)
     city = models.CharField(max_length=30, blank=True, null=True)
     company_id = models.ForeignKey("Company", on_delete=models.CASCADE, null=True)
@@ -108,5 +108,13 @@ class Client(User):
     pass
 
 
-class Company(User):
-    pass
+class Company(models.Model):
+    useres = models.ManyToManyField('Client')
+    cnpj = models.CharField("CNPJ", max_length=18, validators=[validate_CNPJ, valida_cnpj], blank=True, null=True)
+
+    def get_companys(self):
+        return ",".join([str(p) for p in self.useres.all()])
+
+    def __unicode__(self):
+        return "{0}".format(self.cnpj)
+

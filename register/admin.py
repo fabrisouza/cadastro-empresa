@@ -50,10 +50,10 @@ class ClientAdmin(admin.ModelAdmin):
     exclude = ["cnpj"]
 
 
-@admin.register(Company)
-class CompanyAdmin(admin.ModelAdmin):
-    list_display = ["cnpj", "name", "address", "city", "email"]
-    exclude = ["first_name", "last_name", "cpf"]
 
+class company(admin.ModelAdmin):
+    list_display = ["useres", "cnpj"]
+    
 
+admin.site.register(Company)
 admin.site.register(User, UserAdmin)

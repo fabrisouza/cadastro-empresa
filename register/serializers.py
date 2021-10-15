@@ -21,12 +21,6 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = ["name", "cnpj", "email", "address", "city"]
 
 
-class ManagerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["first_name", "cpf", "email"]
-
-
 class ListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

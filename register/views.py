@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from .models import Client, Company, User
 from .serializers import (ClientSerializer, CompanySerializer, ListSerializer,
-                          ManagerSerializer, UserSerializer)
+                          UserSerializer)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -51,21 +51,21 @@ class CompanyViewSet(viewsets.ModelViewSet):
         return Response(content)
 
 
-class ManagerViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = ManagerSerializer
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, format=None):
-        content = {
-            "user": str(request.user),
-            "auth": str(request.auth),
-        }
-        return Response(content)
-
-    def get_queryset(self):
-        return super().get_queryset().filter(type="Manager")
+#class ManagerViewSet(viewsets.ModelViewSet):
+#    queryset = User.objects.all()
+#    serializer_class = ManagerSerializer
+#    authentication_classes = [SessionAuthentication, BasicAuthentication]
+#    permission_classes = [IsAuthenticated]
+#
+#    def get(self, request, format=None):
+#        content = {
+#            "user": str(request.user),
+#            "auth": str(request.auth),
+#        }
+#        return Response(content)
+#
+#    def get_queryset(self):
+#        return super().get_queryset().filter(type="Manager")
 
 
 class ListViewSet(viewsets.ModelViewSet):
