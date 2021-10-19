@@ -1,12 +1,12 @@
-
-from rest_framework import generics, viewsets
-from .serializers import UserSerializer, ClientSerializer, CompanySerializer, ManagerSerializer  
-from .models import Client, Company, User, Manager
-from rest_framework.authentication import SessionAuthentication,BasicAuthentication
+from rest_framework import viewsets
+from rest_framework.authentication import (BasicAuthentication,
+                                           SessionAuthentication)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-
+from .models import Client, Company, User
+from .serializers import (ClientSerializer, CompanySerializer, ListSerializer,
+                          UserSerializer)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -15,12 +15,10 @@ class UserViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
-
-
-    def  get(self, request, format = None):
+    def get(self, request, format=None):
         content = {
-            'user': str(request.user),
-            'auth': str(request.auth),
+            "user": str(request.user),
+            "auth": str(request.auth),
         }
         return Response(content)
 
@@ -31,12 +29,10 @@ class ClientViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
-
-
-    def  get(self, request, format = None):
+    def get(self, request, format=None):
         content = {
-            'user': str(request.user),
-            'auth': str(request.auth),
+            "user": str(request.user),
+            "auth": str(request.auth),
         }
         return Response(content)
 
@@ -47,27 +43,40 @@ class CompanyViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
-
-
-    def  get(self, request, format = None):
+    def get(self, request, format=None):
         content = {
-            'user': str(request.user),
-            'auth': str(request.auth),
+            "user": str(request.user),
+            "auth": str(request.auth),
         }
         return Response(content)
 
 
-class ManagerViewSet(viewsets.ModelViewSet):
-    queryset = Manager.objects.all()
-    serializer_class = ManagerSerializer
+#class ManagerViewSet(viewsets.ModelViewSet):
+#    queryset = User.objects.all()
+#    serializer_class = ManagerSerializer
+#    authentication_classes = [SessionAuthentication, BasicAuthentication]
+#    permission_classes = [IsAuthenticated]
+#
+#    def get(self, request, format=None):
+#        content = {
+#            "user": str(request.user),
+#            "auth": str(request.auth),
+#        }
+#        return Response(content)
+#
+#    def get_queryset(self):
+#        return super().get_queryset().filter(type="Manager")
+
+
+class ListViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = ListSerializer
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
-
-
-    def  get(self, request, format = None):
+    def get(self, request, format=None):
         content = {
-            'user': str(request.user),
-            'auth': str(request.auth),
+            "user": str(request.user),
+            "auth": str(request.auth),
         }
         return Response(content)

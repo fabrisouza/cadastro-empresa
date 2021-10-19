@@ -17,5 +17,4 @@ repos:
     - id: interrogate
       args: [-vv, -i, --fail-under=80]
 
-
       
