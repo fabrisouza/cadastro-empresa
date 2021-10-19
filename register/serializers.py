@@ -18,7 +18,7 @@ class ClientSerializer(serializers.ModelSerializer):
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ["name", "cnpj", "email", "address", "city"]
+        fields = ["useres", "cnpj"]
 
 
 class ListSerializer(serializers.ModelSerializer):

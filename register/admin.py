@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin.options import ModelAdmin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
@@ -47,13 +48,12 @@ class UserAdmin(BaseUserAdmin):
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
     list_display = ["first_name", "last_name", "cpf", "email", "company_id"]
-    exclude = ["cnpj"]
-
+    exclude = ["cnpj", "name"]
 
 
 class company(admin.ModelAdmin):
-    list_display = ["useres", "cnpj"]
+    list_display = ["useres", "cnpj", "address"]
     
 
-admin.site.register(Company)
+admin.site.register(Company, ModelAdmin)
 admin.site.register(User, UserAdmin)

@@ -29,15 +29,13 @@ router = routers.DefaultRouter()
 router.register(r'user', UserViewSet, basename='User')
 router.register(r'client', ClientViewSet, basename='Client')
 router.register(r'company', CompanyViewSet, basename='Company')
-#router.register(r'manager', ManagerViewSet, basename='Manager')
-# router.register('document', DocsViewSet, basename='Document')
 
 
 urlpatterns = [
-    re_path(r'^v1/admin/', admin.site.urls),
-    re_path(r'^v1/api-auth/', include('rest_framework.urls', namespace='v1')),
-    re_path(r'^v1/', include(router.urls)),
-    re_path(r'^v1/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path(r'^admin/', admin.site.urls),
+    re_path(r'^api-auth/', include('rest_framework.urls', namespace='v1')),
+    re_path(r'^api/v1/', include(router.urls)),
+    re_path(r'^swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
